@@ -1,12 +1,8 @@
-# triggerframework
+# trigger framework
 
 ## Background
 
-Apex triggers are a powerful tool that can do great things when used correctly, but cause a lot of headache when used incorrectly. Triggers without structure can be messy. They can interfere with one another and cause huge performance and debugging problems. 
-
-<p id="gdcalert1" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: undefined internal link (link text: "[1]"). Did you generate a TOC with blue links? </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert2">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-[[1]](#heading=h.6nv93jn11jkl)
+Apex triggers are a powerful tool that can do great things when used correctly, but cause a lot of headache when used incorrectly. Triggers without structure can be messy. They can interfere with one another and cause huge performance and debugging problems. [[1]](#heading=h.6nv93jn11jkl)
 
 
 ## Benefits of trigger frameworks
@@ -26,11 +22,7 @@ Apex triggers are a powerful tool that can do great things when used correctly, 
 ## Architecture Diagram
 
 
-
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image1.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image1.png "image_tooltip")
+![framework](https://github.com/anoble2020/triggerframework/assets/80295790/f7868d48-ab34-49f1-8034-13f6ab030804)
 
 
 
@@ -203,7 +195,9 @@ Implemented on each object for which you create a Trigger. Instance handlers sho
 
 ```
 public with sharing class ExampleTriggerHandler extends TriggerHandler {
+
    public static boolean disableTrigger = false;
+
    public override Boolean isDisabled() {
       return disableTrigger;
    }
@@ -219,7 +213,7 @@ public with sharing class ExampleTriggerHandler extends TriggerHandler {
 
 ### TriggerUtility
 
-Use of the TriggerUtility is optional, though it is recommended to improve performance, readability, and to control trigger disabling.
+Use of the TriggerUtility is optional, though it is recommended to improve performance, readability, and to control trigger flow.
 
 
 #### Methods
@@ -234,11 +228,8 @@ Use of the TriggerUtility is optional, though it is recommended to improve perfo
 
 ### Helper and Utility Classes
 
-Classes where all of your logic and processing should live. Typically you would only have a helper class, but if you have a large amount of related functionality you may wish to abstract it to a utility class which can be called from the helper or handler classes. See _WorkOrderTriggerHandler_ in the 
-
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: undefined internal link (link text: "Instance Handlers"). Did you generate a TOC with blue links? </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-[Instance Handlers](#heading=h.p1swrgo554hb) example above for how these classes can be called from a handler.
+Classes where all of your logic and processing should live. Typically you would only have a helper class, but if you have a large amount of related functionality you may wish to abstract it to a utility class which can be called from the helper or handler classes. See _ExampleTriggerHandler_ in the
+"Instance Handlers" example above for how these classes can be called from a handler.
 
 
 ## 
@@ -253,11 +244,7 @@ Classes where all of your logic and processing should live. Typically you would 
 3. Add logic for the methods you require. For example, if you want some beforeInsert logic, add it to the beforeInsert method in your instance handler class.
 4. Create a trigger for your object which fires on all events (before/after insert, before/after update, before/after delete, etc.)
 5. Call the static TriggerDispatcher.Run method from your trigger. Pass it a new instance of your instance handler class as an argument.
-6. Lastly, create a Trigger_Settings__mdt custom metadata record with a MasterLabel matching the object API name, which also has the ‘Enabled’ field set to **true ** 
-
-<p id="gdcalert4" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: undefined internal link (link text: "[2]"). Did you generate a TOC with blue links? </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert5">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-[[2]](#heading=h.6nv93jn11jkl)
+6. Lastly, create a Trigger_Settings__mdt custom metadata record with a DeveloperName matching the object API name (set Is_Trigger_Deactivated__c to **true** to disable) 
 
 
 ## 
