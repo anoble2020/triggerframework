@@ -2,7 +2,7 @@
 
 ## Background
 
-Apex triggers are a powerful tool that can do great things when used correctly, but cause a lot of headache when used incorrectly. Triggers without structure can be messy. They can interfere with one another and cause huge performance and debugging problems. [[1]](#heading=h.6nv93jn11jkl)
+Apex triggers are a powerful tool that can do great things when used correctly, but cause a lot of headache when used incorrectly. Triggers without structure can be messy. They can interfere with one another and cause huge performance and debugging problems. [[1]](#references)
 
 
 ## Benefits of trigger frameworks
@@ -41,8 +41,8 @@ Triggers **must** **never contain any logic**, and in this framework should only
 
 
 ```
-trigger WorkOrderTrigger on WorkOrder(before insert, before update, before delete, after insert, after update, after delete, after undelete){
-   TriggerDispatcher.Run(new WorkOrderTriggerHandler());
+trigger ExampleTrigger on SObject (before insert, before update, before delete, after insert, after update, after delete, after undelete){
+   TriggerDispatcher.run(new ExampleTriggerHandler());
 }
 ```
 
@@ -185,7 +185,7 @@ public abstract class TriggerHandler implements ITriggerHandler {
 
 
 
-### Instance Handlers (ex. ExampleTriggerHandler)
+### Instance Handlers
 
 Implemented on each object for which you create a Trigger. Instance handlers should still contain **no logic**. Includes logic to disable the trigger based on a boolean flag (which gets checked in TriggerDispatcher).
 
@@ -203,7 +203,7 @@ public with sharing class ExampleTriggerHandler extends TriggerHandler {
    }
 
    public override void beforeUpdate(Map<Id, sObject> newMap, Map<Id, sObject> oldMap) {
-      ExampleUtility.sendEmail((List<WorkOrder>);           
+      ExampleUtility.sendEmail((List<SObject>);           
    }
 ...
 }
@@ -229,7 +229,7 @@ Use of the TriggerUtility is optional, though it is recommended to improve perfo
 ### Helper and Utility Classes
 
 Classes where all of your logic and processing should live. Typically you would only have a helper class, but if you have a large amount of related functionality you may wish to abstract it to a utility class which can be called from the helper or handler classes. See _ExampleTriggerHandler_ in the
-"Instance Handlers" example above for how these classes can be called from a handler.
+[Instance Handlers](#instance-handlers) example above for how these classes can be called from a handler.
 
 
 ## 
@@ -240,7 +240,7 @@ Classes where all of your logic and processing should live. Typically you would 
 
 
 1. Ensure ITriggerHandler, TriggerDispatcher, and TriggerHandler classes are deployed to your org (in that order).
-2. Create an instance handler class (such as OpportunityTriggerHandler), which extends TriggerHandler. Have a look at the WorkOrderTriggerHandler class above for a working example.
+2. Create an instance handler class (such as OpportunityTriggerHandler), which extends TriggerHandler. Have a look at the ExampleTriggerHandler class above for a working example.
 3. Add logic for the methods you require. For example, if you want some beforeInsert logic, add it to the beforeInsert method in your instance handler class.
 4. Create a trigger for your object which fires on all events (before/after insert, before/after update, before/after delete, etc.)
 5. Call the static TriggerDispatcher.Run method from your trigger. Pass it a new instance of your instance handler class as an argument.
