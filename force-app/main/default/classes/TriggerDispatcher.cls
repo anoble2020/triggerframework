@@ -1,5 +1,7 @@
 public with sharing class TriggerDispatcher {
 
+    @TestVisible static Boolean skipChecks;
+
     /**
      * @param handler
      */
@@ -8,11 +10,11 @@ public with sharing class TriggerDispatcher {
             return;
         }
 
-        if (Trigger.isBefore) {
+        if (skipChecks || Trigger.isBefore) {
             runBefore(handler);
         }
 
-        if (Trigger.isAfter) {
+        if (skipChecks || Trigger.isAfter) {
             runAfter(handler);
         }
     }
@@ -21,16 +23,16 @@ public with sharing class TriggerDispatcher {
      * @param handler
      */
     static void runBefore(ITriggerHandler handler) {
-        if (Trigger.isInsert) {
-            handler.beforeInsert(trigger.new);
+        if (skipChecks || Trigger.isInsert) {
+            handler.beforeInsert(Trigger.new);
         }
 
-        if (Trigger.isUpdate) {
-            handler.beforeUpdate(trigger.newMap, trigger.oldMap);
+        if (skipChecks || Trigger.isUpdate) {
+            handler.beforeUpdate(Trigger.newMap, Trigger.oldMap);
         }
 
-        if (Trigger.isDelete) {
-            handler.beforeDelete(trigger.oldMap);
+        if (skipChecks || Trigger.isDelete) {
+            handler.beforeDelete(Trigger.oldMap);
         }
     }
 
@@ -38,25 +40,36 @@ public with sharing class TriggerDispatcher {
      * @param handler
      */
     static void runAfter(ITriggerHandler handler) {
-        if (Trigger.isInsert) {
+
+        Type rollClass = System.Type.forName('rh2', 'ParentUtil');
+        if(rollClass != null) {
+            rh2.ParentUtil pu = (rh2.ParentUtil) rollClass.newInstance();
+            pu.performTriggerRollups(Trigger.oldMap, Trigger.newMap, new String[]{getName()}, null);
+        }
+
+
+        if (skipChecks || Trigger.isInsert) {
             handler.afterInsert(Trigger.newMap);
         }
 
-        if (Trigger.isUpdate) {
-            handler.afterUpdate(trigger.newMap, trigger.oldMap);
+        if (skipChecks || Trigger.isUpdate) {
+            handler.afterUpdate(Trigger.newMap, Trigger.oldMap);
         }
 
-        if (trigger.isDelete) {
-            handler.afterDelete(trigger.oldMap);
+        if (skipChecks || Trigger.isDelete) {
+            handler.afterDelete(Trigger.oldMap);
         }
 
-        if (trigger.isUndelete) {
-            handler.afterUndelete(trigger.oldMap);
+        if (skipChecks || Trigger.isUndelete) {
+            handler.afterUndelete(Trigger.oldMap);
         }
     }
 
     static SObjectType getType() {
-        if (Trigger.new == null) {
+        if(skipChecks){
+            return Account.SObjectType;
+        }
+        else if (Trigger.new == null) {
             return Trigger.old.getSObjectType();
         } else {
             return Trigger.new.getSObjectType();
