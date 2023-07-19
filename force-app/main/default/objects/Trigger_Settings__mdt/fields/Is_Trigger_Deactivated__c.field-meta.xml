@@ -3,6 +3,7 @@
     <fullName>Is_Trigger_Deactivated__c</fullName>
     <defaultValue>false</defaultValue>
     <externalId>false</externalId>
+    <helpText>If checked, the trigger for this object will not be executed during runtime.</helpText>
     <fieldManageability>DeveloperControlled</fieldManageability>
     <label>Is Trigger Deactivated</label>
     <type>Checkbox</type>
