@@ -1,4 +1,4 @@
-public abstract class TriggerHandler implements ITriggerHandler {
+public virtual class TriggerHandler implements ITriggerHandler {
     public virtual void beforeInsert(List<sObject> newList) {
     }
     public virtual void beforeUpdate(Map<Id, sObject> newMap, Map<Id, sObject> oldMap) {
