@@ -235,7 +235,7 @@ Use of the TriggerUtility is optional, though it is recommended to improve perfo
 ### Helper and Utility Classes
 
 Classes where all of your logic and processing should live. Typically you would only have a helper class, but if you have a large amount of related functionality that is shared across objects you may wish to abstract it to a utility class which can be called from the helper or handler classes. See _ExampleTriggerHandler_ in the
-[Concrete Handlers](#instance-handlers) example above for how these classes can be called from a handler.
+[Concrete Handlers](#concrete-handlers) example above for how these classes can be called from a handler.
 
 
 ## 
