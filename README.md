@@ -9,11 +9,17 @@ Apex triggers are a powerful tool that can do great things when used correctly, 
 
 
 
-* Removing trigger logic from the trigger makes unit testing and maintenance much easier.
-* Standardizing triggers means all of your triggers work in a consistent way.
-* A single trigger per object gives full control over order of execution.
-* Prevention of trigger recursion.
-* It makes it easy for large teams of developers to work across an org with lots of triggers.
+* Improved separation of concerns - Logic is separated from execution, allowing developers to focus on writing trigger business logic without worrying about framework code.
+* Increased modularity - Triggers are broken down into discrete, reusable components that can be easily maintained and updated independently.
+* Facilitates extensibility - It's easy to add new trigger handlers to introduce new trigger functionality without disturbing existing logic.
+* Promotes declarative programming - Developers configure trigger execution declaratively instead of imperatively coding triggering logic.
+* Enforces best practices - Frameworks can enforce handling of bulkification, recursion prevention, testing, etc.
+* Improved readability - Frameworks standardize how trigger code is organized and structured.
+* Allows easier debugging - By funneling execution through a single dispatcher, debugging is simplified.
+* Provides consistency - All triggers follow the same patterns across the org for easier long-term maintenance.
+* Enables metadata-driven configuration - Trigger state can be configured through custom metadata types.
+
+In summary, trigger frameworks not only make building robust trigger solutions easier, they enforce critical best practices that support long-term org health and trigger maintenance at scale.
 
 
 ## 
@@ -34,7 +40,7 @@ Apex triggers are a powerful tool that can do great things when used correctly, 
 
 ### Trigger
 
-Triggers **must** **never contain any logic**, and in this framework should only contain one line of code (running the instance handler).
+Triggers **must** **never contain any logic**, and in this framework should only contain one line of code (running the concrete handler).
 
 
 #### Example
@@ -50,7 +56,7 @@ trigger ExampleTrigger on SObject (before insert, before update, before delete, 
 
 ### TriggerDispatcher
 
-Defines the trigger dispatching architecture. Invokes the appropriate methods on the handler (ITriggerHandler) depending on the trigger context.
+Defines the trigger dispatching architecture. Invokes the appropriate methods on the handler (ITriggerHandler) depending on the trigger context. Ensures all trigger contexts only execute once.
 
 
 #### Example
@@ -155,14 +161,14 @@ public interface ITriggerHandler {
 
 ### TriggerHandler
 
-Abstract base class from which you can inherit methods from in all of your instance trigger handlers. Included methods are context-specific and are automatically called when a trigger is executed.
+Virtual base class from which you can inherit methods from in all of your concrete trigger handlers. Included methods are context-specific and are automatically called when a trigger is executed.
 
 
 #### Example
 
 
 ```
-public abstract class TriggerHandler implements ITriggerHandler {
+public virtual class TriggerHandler implements ITriggerHandler {
    public virtual void beforeInsert(List<sObject> newList) {
    }
    public virtual void beforeUpdate(Map<Id, sObject> newMap, Map<Id, sObject> oldMap) {
@@ -185,9 +191,9 @@ public abstract class TriggerHandler implements ITriggerHandler {
 
 
 
-### Instance Handlers
+### Concrete Handlers
 
-Implemented on each object for which you create a Trigger. Instance handlers should still contain **no logic**. Includes logic to disable the trigger based on a boolean flag (which gets checked in TriggerDispatcher).
+Implemented on each object for which you create a Trigger. Concrete handlers should still ideally contain **no logic**. Includes logic to disable the trigger based on a boolean flag (which is evaluated in TriggerDispatcher).
 
 
 #### Example
@@ -228,8 +234,8 @@ Use of the TriggerUtility is optional, though it is recommended to improve perfo
 
 ### Helper and Utility Classes
 
-Classes where all of your logic and processing should live. Typically you would only have a helper class, but if you have a large amount of related functionality you may wish to abstract it to a utility class which can be called from the helper or handler classes. See _ExampleTriggerHandler_ in the
-[Instance Handlers](#instance-handlers) example above for how these classes can be called from a handler.
+Classes where all of your logic and processing should live. Typically you would only have a helper class, but if you have a large amount of related functionality that is shared across objects you may wish to abstract it to a utility class which can be called from the helper or handler classes. See _ExampleTriggerHandler_ in the
+[Concrete Handlers](#instance-handlers) example above for how these classes can be called from a handler.
 
 
 ## 
