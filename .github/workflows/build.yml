@@ -26,16 +26,17 @@ jobs:
       - name: Authenticate with DevHub
         run: sf org login sfdx-url -f ./authfile -a DevHub
         
+      # Modified this step to explicitly specify the DevHub
       - name: Create Scratch Org
-        run: sf org create scratch -f config/project-scratch-def.json -a scratch-org -d
+        run: sf org create scratch -f config/project-scratch-def.json -a scratch-org -d -v DevHub
         
       - name: Deploy to Scratch Org
-        run: sf project deploy start
+        run: sf project deploy start -o scratch-org
         
       - name: Run Apex Tests
         run: |
           mkdir -p tests/apex
-          sf apex test run -c -r human -d tests/apex --wait 10
+          sf apex test run -c -r human -d tests/apex --wait 10 -o scratch-org
           
       - name: Upload Test Results
         uses: actions/upload-artifact@v3
