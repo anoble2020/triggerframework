@@ -1,5 +1,7 @@
 # trigger framework
 
+A lightweight Salesforce Apex trigger framework
+
 ## Installation
 
 Deploy this unlocked package directly using one of these methods:
