@@ -1,0 +1,50 @@
+name: Salesforce CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install Salesforce CLI
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sf/channels/stable/sf-linux-x64.tar.xz
+          mkdir -p $HOME/sf
+          tar xJf sf-linux-x64.tar.xz -C $HOME/sf --strip-components 1
+          echo "$HOME/sf/bin" >> $GITHUB_PATH
+          
+      - name: Create Auth File
+        run: |
+          echo "${{ secrets.SFDX_AUTH_URL }}" > ./authfile
+          
+      - name: Authenticate with DevHub
+        run: sf org login sfdx-url -f ./authfile -a DevHub
+        
+      - name: Create Scratch Org
+        run: sf org create scratch -f config/project-scratch-def.json -a scratch-org -d
+        
+      - name: Deploy to Scratch Org
+        run: sf project deploy start
+        
+      - name: Run Apex Tests
+        run: |
+          mkdir -p tests/apex
+          sf apex test run -c -r human -d tests/apex --wait 10
+          
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: tests/apex
+          
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./tests/apex
+          fail_ci_if_error: true
