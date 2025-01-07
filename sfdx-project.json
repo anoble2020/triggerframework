@@ -1,0 +1,21 @@
+{
+  "packageDirectories": [
+    {
+      "path": "triggerframework",
+      "default": true,
+      "package": "triggerframework",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "versionDescription": ""
+    }
+  ],
+  "name": "trigger framework",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "59.0",
+  "packageAliases": {
+    "triggerframework": "0Ho6g000000GnF1CAK",
+    "triggerframework@0.1.0-1": "04t6g000008StvfAAC",
+    "triggerframework@0.1.0-2": "04t6g000008StvkAAC"
+  }
+}

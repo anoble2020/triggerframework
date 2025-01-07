@@ -3,10 +3,10 @@ public with sharing class TriggerDispatcher {
     @TestVisible static Boolean skipChecks;
 
     /**
-     * @param handler
-     */
+     * @param ITriggerHandler handler
+    **/
     public static void run(ITriggerHandler handler) {
-        if (handler.isDisabled() || TriggerUtility.runTrigger(getName())) {
+        if (handler == null || handler.isDisabled() || TriggerUtility.runTrigger(getName())) {
             return;
         }
 
@@ -20,8 +20,8 @@ public with sharing class TriggerDispatcher {
     }
 
     /**
-     * @param handler
-     */
+     * @param ITriggerHandler handler
+    **/
     static void runBefore(ITriggerHandler handler) {
         if (skipChecks || Trigger.isInsert) {
             handler.beforeInsert(Trigger.new);
@@ -37,16 +37,9 @@ public with sharing class TriggerDispatcher {
     }
 
     /**
-     * @param handler
-     */
+     * @param ITriggerHandler handler
+    **/
     static void runAfter(ITriggerHandler handler) {
-
-        Type rollClass = System.Type.forName('rh2', 'ParentUtil');
-        if(rollClass != null) {
-            rh2.ParentUtil pu = (rh2.ParentUtil) rollClass.newInstance();
-            pu.performTriggerRollups(Trigger.oldMap, Trigger.newMap, new String[]{getName()}, null);
-        }
-
 
         if (skipChecks || Trigger.isInsert) {
             handler.afterInsert(Trigger.newMap);

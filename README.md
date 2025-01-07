@@ -1,5 +1,18 @@
 # trigger framework
 
+## Installation
+
+Deploy this unlocked package directly using one of these methods:
+
+1. **Package Installation URL**:
+   - Production/Developer: `/packaging/installPackage.apexp?p0=04t6g000008StvkAAC`
+   - Sandbox: `/packaging/installPackage.apexp?p0=04t6g000008StvkAAC`
+
+2. **sfdx CLI**:
+   ```bash
+   sf package install --package triggerframework@LATEST
+   ```
+
 ## Background
 
 Apex triggers are a powerful tool that can do great things when used correctly, but cause a lot of headache when used incorrectly. Triggers without structure can be messy. They can interfere with one another and cause huge performance and debugging problems. [[1]](#references)
