@@ -2,6 +2,9 @@
 
 A lightweight Salesforce Apex trigger framework
 
+[![codecov](https://codecov.io/github/anoble2020/triggerframework/graph/badge.svg?token=KRRXNJ9FM4)](https://codecov.io/github/anoble2020/triggerframework)
+[![Salesforce CI](https://github.com/anoble2020/triggerframework/actions/workflows/build.yml/badge.svg)](https://github.com/anoble2020/triggerframework/actions/workflows/build.yml)
+
 ## Installation
 
 Deploy this unlocked package directly using one of these methods:
@@ -277,4 +280,6 @@ Classes where all of your logic and processing should live. Typically you would 
 [1] - [Apex Hours - Trigger Framework in Salesforce](https://www.apexhours.com/trigger-framework-in-salesforce/#:~:text=Why%20Trigger%20Framework&text=Ensures%20triggers%20are%20consistently%20handled,for%20simple%20Triggers%20and%20handlers.&text=Allow%20you%20to%20enforce%20different,mid%20process.)
 
 [2] - [Lightweight Trigger Framework](https://github.com/ChrisAldridge/Lightweight-Trigger-Framework)
+
+[![Salesforce CI](https://github.com/anoble2020/triggerframework/actions/workflows/ci.yml/badge.svg)](https://github.com/anoble2020/triggerframework/actions/workflows/ci.yml)
 
