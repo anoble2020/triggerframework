@@ -45,7 +45,9 @@ jobs:
           path: tests/apex
           
       - name: Upload to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           directory: ./tests/apex
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: anoble2020/triggerframework
           fail_ci_if_error: true
