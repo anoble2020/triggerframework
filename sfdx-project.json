@@ -4,9 +4,9 @@
       "path": "triggerframework",
       "default": true,
       "package": "triggerframework",
-      "versionName": "ver 0.1",
-      "versionNumber": "0.1.0.NEXT",
-      "versionDescription": ""
+      "versionName": "ver 0.2",
+      "versionNumber": "0.2.0.NEXT",
+      "versionDescription": "Initial release"
     }
   ],
   "name": "trigger framework",
@@ -16,6 +16,8 @@
   "packageAliases": {
     "triggerframework": "0Ho6g000000GnF1CAK",
     "triggerframework@0.1.0-1": "04t6g000008StvfAAC",
-    "triggerframework@0.1.0-2": "04t6g000008StvkAAC"
+    "triggerframework@0.1.0-2": "04t6g000008StvkAAC",
+    "triggerframework@0.1.0-3": "04t6g000008StvpAAC",
+    "triggerframework@0.2.0-1": "04t6g000008StvuAAC"
   }
 }
