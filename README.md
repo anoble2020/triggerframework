@@ -5,8 +5,8 @@
 Deploy this unlocked package directly using one of these methods:
 
 1. **Package Installation URL**:
-   - Production/Developer: `/packaging/installPackage.apexp?p0=04t6g000008StvkAAC`
-   - Sandbox: `/packaging/installPackage.apexp?p0=04t6g000008StvkAAC`
+[![Install Unlocked Package in a Sandbox](./images/button_install-in-sandbox-org.png)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t6g000008StvkAAC)
+[![Install Unlocked Package in Production](./images/button_install-in-production-org.png)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t6g000008StvkAAC)
 
 2. **sfdx CLI**:
    ```bash
