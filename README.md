@@ -65,7 +65,7 @@ Triggers **must** **never contain any logic**, and in this framework should only
 #### Example
 
 
-```
+```apex
 trigger ExampleTrigger on SObject (before insert, before update, before delete, after insert, after update, after delete, after undelete){
    TriggerDispatcher.run(new ExampleTriggerHandler());
 }
@@ -81,7 +81,7 @@ Defines the trigger dispatching architecture. Invokes the appropriate methods on
 #### Example
 
 
-```
+```apex
 public with sharing class TriggerDispatcher {
 
    public static void run(ITriggerHandler handler) {
@@ -154,7 +154,7 @@ Defines the interface for trigger handlers. Ensures processing of all possible t
 #### Example
 
 
-```
+```apex
 public interface ITriggerHandler {
 
    void beforeInsert(List<SObject> newItems);
@@ -186,7 +186,7 @@ Virtual base class from which you can inherit methods from in all of your concre
 #### Example
 
 
-```
+```apex
 public virtual class TriggerHandler implements ITriggerHandler {
    public virtual void beforeInsert(List<sObject> newList) {
    }
@@ -218,7 +218,7 @@ Implemented on each object for which you create a Trigger. Concrete handlers sho
 #### Example
 
 
-```
+```apex
 public with sharing class ExampleTriggerHandler extends TriggerHandler {
 
    public static boolean disableTrigger = false;
