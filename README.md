@@ -228,7 +228,7 @@ public with sharing class ExampleTriggerHandler extends TriggerHandler {
    }
 
    public override void beforeUpdate(Map<Id, sObject> newMap, Map<Id, sObject> oldMap) {
-      ExampleUtility.sendEmail((List<SObject>);           
+      ExampleUtility.sendEmail((List<SObject>)newMap.values());           
    }
 ...
 }
