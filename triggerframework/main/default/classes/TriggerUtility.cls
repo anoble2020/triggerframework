@@ -1,6 +1,7 @@
 public with sharing class TriggerUtility {
 
-    private static Map<String, Boolean> sObjTriggerSettingMap = new Map<String, Boolean>();
+    @TestVisible private static List<String> bypassedMethods = new List<String>();
+    @TestVisible private static Map<String, Boolean> sObjTriggerSettingMap = new Map<String, Boolean>();
 
     public static Boolean runTrigger(String objectName) {
         if(!sObjTriggerSettingMap.keySet().isEmpty() && sObjTriggerSettingMap.containsKey(objectName)){
@@ -69,5 +70,55 @@ public with sharing class TriggerUtility {
             }
         }
         return isAnd;
+    }
+
+    public static MethodDetails getMethodDetails() {
+        try { throw new DmlException(); }
+        catch (DmlException e)
+        {
+            List<String> stackTrace = e.getStackTraceString().split('\n');
+            String base = stackTrace[2].substringAfter('.').substringBefore(':');
+
+            MethodDetails md = new MethodDetails();
+            md.className = base.substringBefore('.');
+            md.methodName = base.substringAfter('.');
+            md.fullName = base;
+            md.stackTrace = e.getStackTraceString();
+            return md;
+        }
+    }
+
+    public static Boolean runMethod(List<SObject> records){
+        if(records.isEmpty()){
+            return false;
+        }
+
+        if(bypassedMethods.contains(getMethodDetails().fullName)){
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void bypassMethod(String methodName){
+        System.debug('[triggerframework] Bypassing method: ' + methodName);
+        bypassedMethods.add(methodName);
+    }
+
+    public static void unbypassMethod(String methodName){
+        if(bypassedMethods.contains(methodName)){
+            bypassedMethods.remove(bypassedMethods.indexOf(methodName));
+        }
+    }
+
+    public static void resetBypassedMethods(){
+        bypassedMethods.clear();
+    }
+
+    public class MethodDetails {
+        public String className;
+        public String methodName;
+        public String fullName;
+        public String stackTrace;
     }
 }

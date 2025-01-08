@@ -259,17 +259,52 @@ Classes where all of your logic and processing should live. Typically you would 
 
 ## 
 
+### Bypassing Methods
+
+The framework provides functionality to temporarily bypass specific trigger methods during execution. This is useful for preventing recursive trigger execution or skipping certain logic in specific scenarios.
+
+#### Available Methods
+
+- **bypassMethod(String methodName)**: Prevents a specific method from executing
+- **unbypassMethod(String methodName)**: Removes the bypass for a specific method
+- **resetBypassedMethods()**: Clears all method bypasses
+- **runMethod(List<SObject> records)**: Checks if a method should run based on bypass status
+
+#### Example Usage
+
+```apex
+public class AccountTriggerHelper {
+    public static void updateContacts(List<Account> accounts) {
+        // Check if method should run
+        if (!TriggerUtility.runMethod(accounts)) { return; }
+        
+        // Method logic here
+    }
+}
+
+// To bypass the method from another class:
+TriggerUtility.bypassMethod('AccountTriggerHelper.updateContacts');
+
+// To remove the bypass:
+TriggerUtility.unbypassMethod('AccountTriggerHelper.updateContacts');
+
+// To clear all bypassed methods:
+TriggerUtility.resetBypassedMethods();
+```
+
+The bypass functionality uses the full method name (ClassName.methodName) to identify which methods to skip. The framework automatically detects the calling method name through stack trace analysis, so you don't need to manually specify it in the `runMethod()` check.
+
 
 ## Implementation Guide
 
 
 
 1. Ensure ITriggerHandler, TriggerDispatcher, and TriggerHandler classes are deployed to your org (in that order).
-2. Create an instance handler class (such as OpportunityTriggerHandler), which extends TriggerHandler. Have a look at the ExampleTriggerHandler class above for a working example.
+2. Create an instance handler class which extends TriggerHandler. Have a look at the ExampleTriggerHandler class in /examples for a working example.
 3. Add logic for the methods you require. For example, if you want some beforeInsert logic, add it to the beforeInsert method in your instance handler class.
-4. Create a trigger for your object which fires on all events (before/after insert, before/after update, before/after delete, etc.)
-5. Call the static TriggerDispatcher.Run method from your trigger. Pass it a new instance of your instance handler class as an argument.
-6. Lastly, create a Trigger_Settings__mdt custom metadata record with a DeveloperName matching the object API name (set Is_Trigger_Deactivated__c to **true** to disable) 
+4. Create a trigger for your object which fires on events (before/after insert, before/after update, before/after delete, etc.)
+5. Call the static TriggerDispatcher.run() method from your trigger. Pass it a new instance of your instance handler class as an argument.
+6. Lastly, create a Trigger_Settings__mdt custom metadata record with a MasterLabel matching the object API name (set Is_Trigger_Deactivated__c to **true** to disable). To elaborate on why the MasterLabel is used, it is because the DeveloperName cannot end in "__c", which will be the suffix for any custom object. The MasterLabel field does not have the same constraint.
 
 
 ## 
@@ -278,8 +313,4 @@ Classes where all of your logic and processing should live. Typically you would 
 ## References
 
 [1] - [Apex Hours - Trigger Framework in Salesforce](https://www.apexhours.com/trigger-framework-in-salesforce/#:~:text=Why%20Trigger%20Framework&text=Ensures%20triggers%20are%20consistently%20handled,for%20simple%20Triggers%20and%20handlers.&text=Allow%20you%20to%20enforce%20different,mid%20process.)
-
-[2] - [Lightweight Trigger Framework](https://github.com/ChrisAldridge/Lightweight-Trigger-Framework)
-
-[![Salesforce CI](https://github.com/anoble2020/triggerframework/actions/workflows/ci.yml/badge.svg)](https://github.com/anoble2020/triggerframework/actions/workflows/ci.yml)
 
